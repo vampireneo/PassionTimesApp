@@ -15,7 +15,15 @@ public class Article implements Serializable {
     protected String ts;
     protected String category;
     protected String subCategory;
+    protected String id;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getAuthor() {
         return author;

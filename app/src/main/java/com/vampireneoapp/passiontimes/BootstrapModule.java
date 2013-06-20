@@ -7,6 +7,8 @@ import com.vampireneoapp.passiontimes.authenticator.BootstrapAuthenticatorActivi
 import com.vampireneoapp.passiontimes.authenticator.LogoutService;
 import com.vampireneoapp.passiontimes.core.CheckIn;
 import com.vampireneoapp.passiontimes.core.TimerService;
+import com.vampireneoapp.passiontimes.ui.ArticleActivity;
+import com.vampireneoapp.passiontimes.ui.ArticleListFragment;
 import com.vampireneoapp.passiontimes.ui.BootstrapTimerActivity;
 import com.vampireneoapp.passiontimes.ui.CarouselActivity;
 import com.vampireneoapp.passiontimes.ui.CheckInsListFragment;
@@ -40,7 +42,9 @@ import dagger.Provides;
                 NewsListFragment.class,
                 UserActivity.class,
                 UserListFragment.class,
-                TimerService.class
+                TimerService.class,
+                ArticleActivity.class,
+                ArticleListFragment.class
         }
 
 )

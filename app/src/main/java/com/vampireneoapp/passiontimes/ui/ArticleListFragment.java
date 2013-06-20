@@ -13,20 +13,21 @@ import com.vampireneoapp.passiontimes.BootstrapApplication;
 import com.vampireneoapp.passiontimes.BootstrapServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.authenticator.LogoutService;
-import com.vampireneoapp.passiontimes.core.AvatarLoader;
-import com.vampireneoapp.passiontimes.core.User;
+import com.vampireneoapp.passiontimes.core.Article;
+import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.vampireneoapp.passiontimes.core.Constants.Extra.USER;
+import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
 
-public class ArticleListFragment extends ItemListFragment<User> {
+public class ArticleListFragment extends ItemListFragment<Article> {
+
 
     @Inject BootstrapServiceProvider serviceProvider;
-    @Inject AvatarLoader avatars;
+    @Inject ThumbnailLoader avatars;
     @Inject LogoutService logoutService;
 
 
@@ -60,17 +61,17 @@ public class ArticleListFragment extends ItemListFragment<User> {
 
 
     @Override
-    public Loader<List<User>> onCreateLoader(int id, Bundle args) {
-        final List<User> initialItems = items;
-        return new ThrowableLoader<List<User>>(getActivity(), items) {
+    public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
+        final List<Article> initialItems = items;
+        return new ThrowableLoader<List<Article>>(getActivity(), items) {
             @Override
-            public List<User> loadData() throws Exception {
+            public List<Article> loadData() throws Exception {
 
                 try {
-                    List<User> latest = null;
+                    List<Article> latest = null;
 
                     if(getActivity() != null)
-                        latest = serviceProvider.getService(getActivity()).getUsers();
+                        latest = serviceProvider.getService(getActivity()).getArticles();
 
                     if (latest != null)
                         return latest;
@@ -88,13 +89,13 @@ public class ArticleListFragment extends ItemListFragment<User> {
     }
 
     public void onListItemClick(ListView l, View v, int position, long id) {
-        User user = ((User) l.getItemAtPosition(position));
+        Article article = ((Article) l.getItemAtPosition(position));
 
-        startActivity(new Intent(getActivity(), UserActivity.class).putExtra(USER, user));
+        startActivity(new Intent(getActivity(), ArticleActivity.class).putExtra(ARTICLE, article));
     }
 
     @Override
-    public void onLoadFinished(Loader<List<User>> loader, List<User> items) {
+    public void onLoadFinished(Loader<List<Article>> loader, List<Article> items) {
         super.onLoadFinished(loader, items);
 
     }
@@ -105,7 +106,7 @@ public class ArticleListFragment extends ItemListFragment<User> {
     }
 
     @Override
-    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
-        return new UserListAdapter(getActivity().getLayoutInflater(), items, avatars);
+    protected SingleTypeAdapter<Article> createAdapter(List<Article> items) {
+        return new ArticleListAdapter(getActivity().getLayoutInflater(), items, avatars);
     }
 }
