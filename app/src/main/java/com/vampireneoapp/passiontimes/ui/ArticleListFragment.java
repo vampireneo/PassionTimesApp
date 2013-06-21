@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.vampireneoapp.passiontimes.BootstrapApplication;
-import com.vampireneoapp.passiontimes.BootstrapServiceProvider;
+import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.authenticator.LogoutService;
 import com.vampireneoapp.passiontimes.core.Article;
@@ -26,7 +26,7 @@ import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
 public class ArticleListFragment extends ItemListFragment<Article> {
 
 
-    @Inject BootstrapServiceProvider serviceProvider;
+    @Inject PassionTimesServiceProvider serviceProvider;
     @Inject ThumbnailLoader avatars;
     @Inject LogoutService logoutService;
 
