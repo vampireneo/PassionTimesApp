@@ -17,6 +17,7 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.HEADER_PARSE_RE
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_APP_ID;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_REST_API_KEY;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_NEWS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_USERS;
@@ -115,6 +116,17 @@ public class PassionTimesService {
     }
 
     /**
+     * Create bootstrap service
+     *
+     */
+    public PassionTimesService() {
+        this.userAgentProvider = null;
+        this.username = null;
+        this.password = null;
+        this.apiKey = null;
+    }
+
+    /**
      * Execute request
      *
      * @param request
@@ -129,7 +141,7 @@ public class PassionTimesService {
 
     private HttpRequest configure(final HttpRequest request) {
         request.connectTimeout(TIMEOUT).readTimeout(TIMEOUT);
-        request.userAgent(userAgentProvider.get());
+//        request.userAgent(userAgentProvider.get());
 
         if(isPostOrPut(request))
             request.contentType(Constants.Http.CONTENT_TYPE_JSON); // All PUT & POST requests to Parse.com api must be in JSON - https://www.parse.com/docs/rest#general-requests
@@ -206,7 +218,7 @@ public class PassionTimesService {
      */
     public List<Article> getArticles() throws IOException {
         try {
-            HttpRequest request = execute(HttpRequest.get(PT_URL_ARTICLE));
+            HttpRequest request = execute(HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE));
             ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
             if (response != null && response.results != null)
                 return response.results;

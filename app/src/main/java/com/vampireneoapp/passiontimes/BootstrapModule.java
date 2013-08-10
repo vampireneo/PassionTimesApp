@@ -34,14 +34,14 @@ import dagger.Provides;
 
         injects = {
                 BootstrapApplication.class,
-                BootstrapAuthenticatorActivity.class,
+//                BootstrapAuthenticatorActivity.class,
                 CarouselActivity.class,
                 BootstrapTimerActivity.class,
                 CheckInsListFragment.class,
-                NewsActivity.class,
+                /*NewsActivity.class,
                 NewsListFragment.class,
                 UserActivity.class,
-                UserListFragment.class,
+                UserListFragment.class,*/
                 TimerService.class,
                 ArticleActivity.class,
                 ArticleListFragment.class

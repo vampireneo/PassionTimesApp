@@ -40,7 +40,7 @@
 
         <service android:name=".core.TimerService" android:enabled="true" android:exported="false" />
 
-        <service
+        <!--<service
             android:name=".authenticator.AccountAuthenticatorService"
             android:process=":auth" >
             <intent-filter>
@@ -50,7 +50,7 @@
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
-        </service>
+        </service>-->
 
         <activity
             android:name=".authenticator.BootstrapAuthenticatorActivity"

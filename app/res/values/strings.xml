@@ -16,6 +16,7 @@
     <string name="user_column">User</string>
     <string name="article_column">Article</string>
     <string name="date_column">Date</string>
+    <string name="error_loading_articles">Loading articles failed</string>
     <string name="error_loading_users">Loading users failed</string>
     <string name="error_loading_news">Loading news failed</string>
     <string name="error_loading_checkins">Loading check-ins failed</string>
