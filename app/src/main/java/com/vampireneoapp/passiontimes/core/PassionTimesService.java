@@ -1,15 +1,31 @@
 
 package com.vampireneoapp.passiontimes.core;
 
+import android.util.Log;
+
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.vampireneoapp.passiontimes.core.Constants.Http.HEADER_PARSE_APP_ID;
@@ -177,6 +193,33 @@ public class PassionTimesService {
         return request;
     }
 
+    private String readJSONFeed(String URL) {
+        StringBuilder stringBuilder = new StringBuilder();
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet(URL);
+        try {
+            HttpResponse response = httpClient.execute(httpGet);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream inputStream = entity.getContent();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                inputStream.close();
+            } else {
+                Log.d("JSON", "Failed to download file");
+            }
+        } catch (Exception e) {
+            Log.d("readJSONFeed", e.getLocalizedMessage());
+        }
+        return stringBuilder.toString();
+    }
+
     private <V> V fromJson(HttpRequest request, Class<V> target) throws IOException {
         Reader reader = request.bufferedReader();
         try {
@@ -218,8 +261,35 @@ public class PassionTimesService {
      */
     public List<Article> getArticles() throws IOException {
         try {
-            HttpRequest request = execute(HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE));
-            ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
+//            HttpRequest request = execute(HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE));
+            ArticlesWrapper response = new ArticlesWrapper();
+            response.results = new ArrayList<Article>();
+            HttpRequest request = HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE);
+            String test = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE);
+            try {
+                JSONObject jsonObject = new JSONObject(test);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    Article article = new Article();
+                    article.setThumbnail(object.getString("thumbnail"));
+                    article.setDesc(object.getString("desc"));
+                    article.setAuthor(object.getString("author"));
+                    article.setUrl(object.getString("url"));
+                    article.setTitle(object.getString("title"));
+                    article.setId(key);
+                    article.setTs(object.getString("ts"));
+                    article.setCategory(object.getString("category"));
+                    article.setSubCategory(object.getString("subCategory"));
+                    response.results.add(article);
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
+
+            //String test = fromJson(request, String.class);
+            //ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
             if (response != null && response.results != null)
                 return response.results;
             return Collections.emptyList();
