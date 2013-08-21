@@ -16,8 +16,10 @@ import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
 
 public class ArticleActivity extends BootstrapActivity {
 
-    @InjectView(R.id.iv_avatar) protected ImageView avatar;
-    @InjectView(R.id.tv_name) protected TextView name;
+    @InjectView(R.id.iv_image) protected ImageView avatar;
+    @InjectView(R.id.tv_title) protected TextView title;
+    @InjectView(R.id.tv_author) protected TextView author;
+    @InjectView(R.id.tv_content) protected TextView content;
 
     @Inject protected ThumbnailLoader thumbnailLoader;
 
@@ -27,7 +29,7 @@ public class ArticleActivity extends BootstrapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.user_view);
+        setContentView(R.layout.article_view);
 
         if(getIntent() != null && getIntent().getExtras() != null) {
             article = (Article) getIntent().getExtras().getSerializable(ARTICLE);
@@ -37,8 +39,9 @@ public class ArticleActivity extends BootstrapActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         thumbnailLoader.bind(avatar, article);
-        name.setText(String.format("%s %s", article.getTitle(), article.getAuthor()));
-
+        title.setText(article.getTitle());
+        author.setText(article.getAuthor());
+        content.setText(article.getDesc());
     }
 
 

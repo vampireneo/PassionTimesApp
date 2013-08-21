@@ -47,7 +47,7 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_name };
+        return new int[] { R.id.iv_avatar, R.id.tv_title, R.id.tv_desc };
     }
 
     @Override
@@ -55,8 +55,9 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
 
         avatars.bind(imageView(0), article);
 
-        setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
-
+        //setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
+        setText(1, article.getTitle());
+        setText(2, article.getDesc());
     }
 
 }
