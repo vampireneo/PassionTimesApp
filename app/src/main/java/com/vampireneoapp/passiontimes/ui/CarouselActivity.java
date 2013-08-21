@@ -45,10 +45,10 @@ public class CarouselActivity extends BootstrapFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case id.timer:
+            /*case id.timer:
                 final Intent i = new Intent(this, BootstrapTimerActivity.class);
                 startActivity(i);
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }

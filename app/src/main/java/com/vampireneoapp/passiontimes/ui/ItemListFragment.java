@@ -158,9 +158,9 @@ public abstract class ItemListFragment<E> extends SherlockFragment
         case id.refresh:
             forceRefresh();
             return true;
-        case R.id.logout:
+        /*case R.id.logout:
             logout();
-            return true;
+            return true;*/
         default:
             return super.onOptionsItemSelected(item);
         }
