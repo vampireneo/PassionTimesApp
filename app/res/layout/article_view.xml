@@ -4,8 +4,8 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:paddingBottom="5dp"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp"
+              android:paddingLeft="0dp"
+              android:paddingRight="0dp"
               android:paddingTop="5dp"
               android:orientation="vertical">
 
@@ -13,33 +13,25 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
+            android:text="Title"
             android:id="@+id/tv_title"
-            android:textColor="@color/table_text_header"/>
+            android:textColor="@color/table_text_header"
+            android:layout_marginLeft="10dp"/>
 
     <TextView
             android:id="@+id/tv_author"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:text="author"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/table_text_selector" />
+            android:textColor="@color/table_text_selector"
+            android:layout_marginLeft="10dp"/>
 
-    <ImageView
-            android:id="@+id/iv_image"
-            style="@style/AvatarLarge"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:contentDescription="@string/avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <TextView
-            android:layout_width="wrap_content"
+    <WebView
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/tv_content"
-            android:textColor="@color/table_text"/>
+            android:id="@+id/wv_content"
+            android:layout_gravity="center"/>
 
 
 </LinearLayout>

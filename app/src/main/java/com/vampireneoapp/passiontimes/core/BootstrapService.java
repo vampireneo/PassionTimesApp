@@ -8,7 +8,7 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_REST_API_
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_NEWS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_USERS;
-import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE_LIST;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
@@ -206,7 +206,7 @@ public class BootstrapService {
      */
     public List<Article> getArticles() throws IOException {
         try {
-            HttpRequest request = execute(HttpRequest.get(PT_URL_ARTICLE));
+            HttpRequest request = execute(HttpRequest.get(PT_URL_ARTICLE_LIST));
             ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
             if (response != null && response.results != null)
                 return response.results;

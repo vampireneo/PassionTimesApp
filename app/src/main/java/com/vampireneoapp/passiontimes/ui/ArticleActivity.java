@@ -1,26 +1,55 @@
 package com.vampireneoapp.passiontimes.ui;
 
+import android.accounts.AccountsException;
+import android.accounts.OperationCanceledException;
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.core.Article;
 import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.InjectView;
 
 import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
 
 public class ArticleActivity extends BootstrapActivity {
 
-    @InjectView(R.id.iv_image) protected ImageView avatar;
     @InjectView(R.id.tv_title) protected TextView title;
     @InjectView(R.id.tv_author) protected TextView author;
-    @InjectView(R.id.tv_content) protected TextView content;
+    @InjectView(R.id.wv_content) protected WebView content;
 
+    @Inject PassionTimesServiceProvider serviceProvider;
     @Inject protected ThumbnailLoader thumbnailLoader;
 
     protected Article article;
@@ -38,11 +67,41 @@ public class ArticleActivity extends BootstrapActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        thumbnailLoader.bind(avatar, article);
         title.setText(article.getTitle());
         author.setText(article.getAuthor());
-        content.setText(article.getDesc());
+
+        new GetArticleTask(this).execute(article.getId());
     }
 
+    private class GetArticleTask extends AsyncTask<String, Void, Article> {
+        public Activity activity;
+
+        public GetArticleTask(Activity a)
+        {
+            activity = a;
+        }
+
+        @Override
+        protected Article doInBackground(String... id) {
+            Article article = null;
+            try {
+                article = serviceProvider.getService(activity).getArticle(id[0]);
+            } catch (AccountsException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return article;
+        }
+
+        @Override
+        protected void onPostExecute(Article article) {
+            //content.setText(Html.fromHtml(article.getContent()));
+            WebSettings settings = content.getSettings();
+            settings.setDefaultTextEncodingName("utf-8");
+            content.loadData(article.getContent(), "text/html; charset=utf-8", "utf-8");
+            content.setBackgroundColor(0x00000000);
+        }
+    }
 
 }

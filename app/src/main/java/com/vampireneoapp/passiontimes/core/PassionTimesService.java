@@ -15,6 +15,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +34,7 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.HEADER_PARSE_RE
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_APP_ID;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_REST_API_KEY;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE_LIST;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_NEWS;
@@ -253,6 +255,29 @@ public class PassionTimesService {
         }
     }
 
+    public Article getArticle(String id) throws IOException {
+        String request = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE + id);
+        Article article = null;
+        try {
+            JSONObject jsonObject = new JSONObject(request);
+            article = new Article();
+            article.setContent(jsonObject.getString("content"));
+            JSONArray imagesArray = jsonObject.getJSONArray("images");
+            article.setImages(new ArrayList<String>());
+            for (int i = 0; i < imagesArray.length();i++) {
+                article.getImages().add(imagesArray.getString(i));
+            }
+            JSONArray imagesThumbnailArray = jsonObject.getJSONArray("images_thumbnail");
+            article.setImagesThumbnail(new ArrayList<String>());
+            for (int i = 0; i < imagesArray.length();i++) {
+                article.getImagesThumbnail().add(imagesThumbnailArray.getString(i));
+            }
+        } catch (JSONException e) {
+            Log.d("failed to parse JSON", e.getLocalizedMessage());
+        }
+        return article;
+    }
+
     /**
      * Get all articles that exist on PassionTimes
      *
@@ -261,13 +286,13 @@ public class PassionTimesService {
      */
     public List<Article> getArticles() throws IOException {
         try {
-//            HttpRequest request = execute(HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE));
+            //HttpRequest request = execute(HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE_LIST));
             ArticlesWrapper response = new ArticlesWrapper();
             response.results = new ArrayList<Article>();
-            HttpRequest request = HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE);
-            String test = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE);
+            //HttpRequest request = HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE_LIST);
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE_LIST);
             try {
-                JSONObject jsonObject = new JSONObject(test);
+                JSONObject jsonObject = new JSONObject(request);
                 Iterator keys = jsonObject.keys();
                 while (keys.hasNext()) {
                     String key = (String)keys.next();
