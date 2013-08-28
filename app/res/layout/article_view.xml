@@ -9,32 +9,45 @@
               android:paddingTop="5dp"
               android:orientation="vertical">
 
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Title"
-            android:id="@+id/tv_title"
-            android:textColor="@color/table_text_header"
-            android:layout_marginLeft="10dp"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_gravity="left|center_vertical" >
 
-    <TextView
-            android:id="@+id/tv_author"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="author"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/table_text_selector"
-            android:layout_marginLeft="10dp"/>
+            android:layout_height="fill_parent">
 
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Content"
-            android:id="@+id/tv_content"
-            android:layout_gravity="left|center_vertical"
-            android:autoLink="web"
-        android:textColor="@color/table_text" />
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Title"
+                    android:id="@+id/tv_title"
+                    android:textColor="@color/table_text_header"
+                    android:layout_marginLeft="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="author"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/table_text_selector"
+                    android:layout_marginLeft="10dp"/>
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Content"
+                    android:id="@+id/tv_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:autoLink="web"
+                android:textColor="@color/table_text" />
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>
