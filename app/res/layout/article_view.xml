@@ -27,11 +27,14 @@
             android:textColor="@color/table_text_selector"
             android:layout_marginLeft="10dp"/>
 
-    <WebView
+    <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/wv_content"
-            android:layout_gravity="center"/>
+            android:text="Content"
+            android:id="@+id/tv_content"
+            android:layout_gravity="left|center_vertical"
+            android:autoLink="web"
+        android:textColor="@color/table_text" />
 
 
 </LinearLayout>

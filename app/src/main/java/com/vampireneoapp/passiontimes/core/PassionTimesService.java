@@ -307,7 +307,7 @@ public class PassionTimesService {
                     article.setTs(object.getString("ts"));
                     article.setCategory(object.getString("category"));
                     article.setSubCategory(object.getString("subCategory"));
-                    response.results.add(article);
+                    response.results.add(0, article);
                 }
             } catch (JSONException e) {
                 Log.d("failed to parse JSON", e.getLocalizedMessage());
@@ -315,8 +315,9 @@ public class PassionTimesService {
 
             //String test = fromJson(request, String.class);
             //ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
-            if (response != null && response.results != null)
+            if (response != null && response.results != null) {
                 return response.results;
+            }
             return Collections.emptyList();
         } catch (HttpRequestException e) {
             throw e.getCause();

@@ -3,9 +3,11 @@ package com.vampireneoapp.passiontimes.ui;
 import android.accounts.AccountsException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -31,6 +33,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +51,7 @@ public class ArticleActivity extends BootstrapActivity {
 
     @InjectView(R.id.tv_title) protected TextView title;
     @InjectView(R.id.tv_author) protected TextView author;
-    @InjectView(R.id.wv_content) protected WebView content;
+    @InjectView(R.id.tv_content) protected TextView content;
 
     @Inject PassionTimesServiceProvider serviceProvider;
     @Inject protected ThumbnailLoader thumbnailLoader;
@@ -86,6 +90,27 @@ public class ArticleActivity extends BootstrapActivity {
             Article article = null;
             try {
                 article = serviceProvider.getService(activity).getArticle(id[0]);
+                Spanned html = Html.fromHtml(article.getContent(), new Html.ImageGetter() {
+                    @Override
+                    public Drawable getDrawable(String s) {
+                        Drawable d = null;
+                        try {
+                            InputStream src= imageFetch(s);
+                            d = Drawable.createFromStream(src, "src");
+                            if (d != null) {
+                                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                            }
+                        }
+                        catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return d;
+                    }
+                }, null);
+                article.setContentHtml(html);
             } catch (AccountsException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -96,11 +121,18 @@ public class ArticleActivity extends BootstrapActivity {
 
         @Override
         protected void onPostExecute(Article article) {
-            //content.setText(Html.fromHtml(article.getContent()));
-            WebSettings settings = content.getSettings();
+            content.setText(article.getContentHtml());
+            /*WebSettings settings = content.getSettings();
             settings.setDefaultTextEncodingName("utf-8");
             content.loadData(article.getContent(), "text/html; charset=utf-8", "utf-8");
-            content.setBackgroundColor(0x00000000);
+            content.setBackgroundColor(0x00000000);*/
+        }
+
+        protected InputStream imageFetch(String source) throws MalformedURLException, IOException {
+            URL url = new URL(source);
+            Object o = url.getContent();
+            InputStream content = (InputStream)o;
+            return content;
         }
     }
 
