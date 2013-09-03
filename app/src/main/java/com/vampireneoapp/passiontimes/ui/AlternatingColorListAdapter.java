@@ -3,7 +3,7 @@ package com.vampireneoapp.passiontimes.ui;
 
 import android.view.LayoutInflater;
 
-import com.actionbarsherlock.R.color;
+import com.vampireneoapp.passiontimes.R.color;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.vampireneoapp.passiontimes.R.drawable;
 
@@ -49,10 +49,8 @@ public abstract class AlternatingColorListAdapter<V> extends
             primaryResource = drawable.table_background_selector;
             secondaryResource = drawable.table_background_alternate_selector;
         } else {
-            //primaryResource = color.pager_background;
-            //secondaryResource = color.pager_background_alternate;
-            primaryResource = drawable.table_background_selector;
-            secondaryResource = drawable.table_background_alternate_selector;
+            primaryResource = color.pager_background;
+            secondaryResource = color.pager_background_alternate;
         }
 
         setItems(items);

@@ -166,7 +166,7 @@ public abstract class ItemListFragment<E> extends SherlockFragment
         }
     }
 
-    abstract LogoutService getLogoutService();
+    /*abstract LogoutService getLogoutService();
 
     private void logout() {
         getLogoutService().logout(new Runnable() {
@@ -177,7 +177,7 @@ public abstract class ItemListFragment<E> extends SherlockFragment
                 forceRefresh();
             }
         });
-    }
+    }*/
 
     /**
      * Force a refresh of the items displayed ignoring any cached items

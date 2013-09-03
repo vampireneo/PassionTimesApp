@@ -38,8 +38,6 @@ public class Constants {
     public static class Http {
         private Http() {}
 
-
-
         public static final String PT_URL_BASE = "http://www.passiontimes.hk/connector/";
         public static final String PT_URL_CATEGORY = "?type=categories";
         public static final String PT_URL_AUTHOR = "?type=author";
@@ -93,7 +91,6 @@ public class Constants {
         public static final String USER = "user";
 
         public static final String ARTICLE = "article";
-
     }
 
     public static class Intent {

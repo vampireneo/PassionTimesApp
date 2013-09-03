@@ -54,10 +54,10 @@ public class ArticleListFragment extends ItemListFragment<Article> {
                         .inflate(R.layout.article_list_item_labels, null));
     }
 
-    @Override
+    /*@Override
     LogoutService getLogoutService() {
         return logoutService;
-    }
+    }*/
 
 
     @Override

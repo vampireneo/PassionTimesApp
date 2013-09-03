@@ -9,7 +9,11 @@ to report any bugs or feature requests and to see the list of known issues.
 Have a questions about PassionTimesApp? Ask away on the [com-vampireneoapp-passiontimes discussion forum](https://groups.google.com/forum/#!forum/com-vampireneoapp-passiontimes). 
 
 <a href="https://play.google.com/store/apps/details?id=com.vampireneoapp.passiontimes" alt="Download from Google Play">
-  <img src="http://f.cl.ly/items/000s3k2I2J1V281X2A1f/bootstrap-image.png">
+  <img src="http://f.cl.ly/items/3V0K1s1i402W0c193v2w/Image%202013.07.08%201%3A45%3A25%20PM.png">
+</a>
+
+<a href="https://play.google.com/store/apps/details?id=com.vampireneoapp.passiontimes" alt="Download from Google Play">
+  <img src="http://f.cl.ly/items/0e3T2F2x3M0K2l1X0A0u/Image%202013.07.08%201%3A46%3A09%20PM.png">
 </a>
 
 ## HOW TO
@@ -95,7 +99,7 @@ you will then be able to install your own built version.
 
 PassionTimesApp is a result of a template project I've developed over the years as well as
 a combination of a lot of great work that the [GitHub Gaug.es](http://www.github.com/github/gauges-android)
-app and [GitHub Android](http://www.github.com/github/android) app showcased. Some fo the
+app and [GitHub Android](http://www.github.com/github/android) app showcased. Some of the
 code in this project is based on the GitHub Gaug.es and GitHub Android app.
 
 PassionTimesApp is built on the awesome [Parse.com API](http://www.parse.com/)
@@ -107,6 +111,7 @@ and uses many great open-source libraries from the Android dev community:
   for swiping between fragments and
   [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids) for 
   view animations - all from [Jake Wharton](http://jakewharton.com/).
+* [MenuDrawer](https://github.com/SimonVT/android-menudrawer) for the menu drawer navigation.
 * [Dagger](https://github.com/square/dagger) for dependency-injection.
 * [ButterKnife](https://github.com/JakeWharton/butterknife) for view injection
 * [Otto](https://github.com/square/otto) as the event bus

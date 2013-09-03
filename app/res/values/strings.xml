@@ -2,7 +2,7 @@
 
 <resources>
 
-    <string name="app_name">PassionTimesApp</string>
+    <string name="app_name">PassionTimes</string>
     <string name="content_column">Content</string>
     <string name="page_referrers">Referrers</string>
     <string name="refresh_action">Refresh</string>
@@ -43,6 +43,7 @@
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="timer">Timer</string>
+    <string name="home">Home</string>
 
 
 </resources>
