@@ -40,13 +40,6 @@ public class Constants {
 
 
 
-        public static final String PT_URL_BASE = "http://www.passiontimes.hk/connector/";
-        public static final String PT_URL_CATEGORY = "?type=categories";
-        public static final String PT_URL_AUTHOR = "?type=author";
-        public static final String PT_URL_ARTICLE_LIST = "?type=articlelist&category=604";
-        public static final String PT_URL_ARTICLE = "?type=article&id=";
-
-
         /**
          * Base URL for all requests
          */
@@ -91,8 +84,6 @@ public class Constants {
         public static final String NEWS_ITEM = "news_item";
 
         public static final String USER = "user";
-
-        public static final String ARTICLE = "article";
 
     }
 

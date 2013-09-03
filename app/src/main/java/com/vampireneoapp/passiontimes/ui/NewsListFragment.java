@@ -53,10 +53,10 @@ public class NewsListFragment extends ItemListFragment<News> {
                         .inflate(R.layout.news_list_item_labels, null));
     }
 
-    @Override
+    /*@Override
     LogoutService getLogoutService() {
         return logoutService;
-    }
+    }*/
 
     @Override
     public void onDestroyView() {
