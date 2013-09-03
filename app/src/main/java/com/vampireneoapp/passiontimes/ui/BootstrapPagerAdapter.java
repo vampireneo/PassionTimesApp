@@ -30,7 +30,7 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -38,17 +38,20 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
         Bundle bundle = new Bundle();
         switch (position) {
         case 0:
-            NewsListFragment newsFragment = new NewsListFragment();
+            /*NewsListFragment newsFragment = new NewsListFragment();
             newsFragment.setArguments(bundle);
-            return newsFragment;
-        case 1:
+            return newsFragment;*/
+        /*case 1:
             UserListFragment userListFragment = new UserListFragment();
             userListFragment.setArguments(bundle);
-            return userListFragment;
+            return userListFragment;*/
         /*case 2:
             CheckInsListFragment checkInsFragment = new CheckInsListFragment();
             checkInsFragment.setArguments(bundle);
             return checkInsFragment;*/
+            ArticleListFragment articleListFragment = new ArticleListFragment();
+            articleListFragment.setArguments(bundle);
+            return articleListFragment;
         default:
             return null;
         }
@@ -58,11 +61,12 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(R.string.page_news);
+        /*    return resources.getString(R.string.page_news);
         case 1:
-            return resources.getString(R.string.page_users);
+            return resources.getString(R.string.page_users);*/
         /*case 2:
             return resources.getString(R.string.page_checkins);*/
+            return resources.getString(R.string.page_articles);
         default:
             return null;
         }
