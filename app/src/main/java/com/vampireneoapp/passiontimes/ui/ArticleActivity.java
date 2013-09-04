@@ -3,6 +3,7 @@ package com.vampireneoapp.passiontimes.ui;
 import android.accounts.AccountsException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,9 +12,11 @@ import android.text.Spanned;
 import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.core.Article;
@@ -47,10 +50,11 @@ import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
 
-public class ArticleActivity extends BootstrapActivity {
+public class ArticleActivity extends BootstrapActivity  {
 
     @InjectView(R.id.tv_title) protected TextView title;
     @InjectView(R.id.tv_author) protected TextView author;
+    @InjectView(R.id.tv_date) protected TextView date;
     @InjectView(R.id.tv_content) protected TextView content;
 
     @Inject PassionTimesServiceProvider serviceProvider;
@@ -73,6 +77,7 @@ public class ArticleActivity extends BootstrapActivity {
 
         title.setText(article.getTitle());
         author.setText(article.getAuthor());
+        date.setText(article.getTs());
 
         new GetArticleTask(this).execute(article.getId());
     }

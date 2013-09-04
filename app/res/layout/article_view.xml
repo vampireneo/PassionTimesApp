@@ -29,23 +29,38 @@
                     android:textColor="@color/table_text_header"
                     android:layout_marginLeft="10dp"/>
 
-            <TextView
-                    android:id="@+id/tv_author"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical">
+
+                <TextView
+                        android:id="@+id/tv_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="author"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/table_text_selector"
+                        android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_date"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="author"
+                    android:text="date"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/table_text_selector"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginLeft="10dp" />
+            </LinearLayout>
 
             <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Content"
-                    android:id="@+id/tv_content"
+                android:id="@+id/tv_content"
                     android:layout_gravity="left|center_vertical"
                     android:autoLink="web"
-                android:textColor="@color/table_text" />
+                android:textColor="@color/table_text"
+                android:textSize="@dimen/default_title_indicator_text_size" />
         </LinearLayout>
     </ScrollView>
 

@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -307,11 +308,18 @@ public class PassionTimesService {
                     article.setTs(object.getString("ts"));
                     article.setCategory(object.getString("category"));
                     article.setSubCategory(object.getString("subCategory"));
-                    response.results.add(0, article);
+                    response.results.add(article);
                 }
             } catch (JSONException e) {
                 Log.d("failed to parse JSON", e.getLocalizedMessage());
             }
+
+            Collections.sort(response.results, new Comparator<Article>() {
+                public int compare(Article o1, Article o2) {
+                    int result = o2.getTs().compareTo(o1.getTs());
+                    return (result == 0 ? o2.getId().compareTo(o1.getId()) : result);
+                }
+            });
 
             //String test = fromJson(request, String.class);
             //ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
