@@ -103,6 +103,27 @@ public class ThumbnailLoader {
     /**
      * Get image for article
      *
+     * @param channel
+     * @return image
+     */
+    protected BitmapDrawable getImage(final Channel channel) {
+        File avatarFile = new File(avatarDir, channel.getId());
+
+        if (!avatarFile.exists() || avatarFile.length() == 0)
+            return null;
+
+        Bitmap bitmap = decode(avatarFile);
+        if (bitmap != null)
+            return new BitmapDrawable(context.getResources(), bitmap);
+        else {
+            avatarFile.delete();
+            return null;
+        }
+    }
+
+    /**
+     * Get image for article
+     *
      * @param article
      * @return image
      */
@@ -179,6 +200,67 @@ public class ThumbnailLoader {
                 }
             rawAvatar.delete();
         }
+    }
+
+    /**
+     * Sets the logo on the {@link com.actionbarsherlock.app.ActionBar} to the channel's thumbnail.
+     *
+     * @param actionBar
+     * @param channel
+     * @return this helper
+     */
+    public ThumbnailLoader bind(final ActionBar actionBar, final Channel channel) {
+        return bind2(actionBar, new AtomicReference<Channel>(channel));
+    }
+
+    /**
+     * Sets the logo on the {@link com.actionbarsherlock.app.ActionBar} to the article's thumbnail.
+     *
+     * @param actionBar
+     * @param channelReference
+     * @return this helper
+     */
+    public ThumbnailLoader bind2(final ActionBar actionBar,
+                                final AtomicReference<Channel> channelReference) {
+        if (channelReference == null)
+            return this;
+
+        final Channel channel = channelReference.get();
+        if (channel == null)
+            return this;
+
+        final String thumbnailUrl = channel.getIcon();
+        if (TextUtils.isEmpty(thumbnailUrl))
+            return this;
+
+        final String channelId = channel.getId();
+
+        BitmapDrawable loadedImage = loaded.get(channelId);
+        if (loadedImage != null) {
+            actionBar.setLogo(loadedImage);
+            return this;
+        }
+
+        new FetchAvatarTask(context) {
+
+            @Override
+            public BitmapDrawable call() throws Exception {
+                final BitmapDrawable image = getImage(channel);
+                if (image != null)
+                    return image;
+                else
+                    return fetchAvatar(thumbnailUrl, channelId.toString());
+            }
+
+            @Override
+            protected void onSuccess(BitmapDrawable image) throws Exception {
+                final Channel current = channelReference.get();
+                if (current != null && channelId.equals(current.getId()))
+                    actionBar.setLogo(image);
+            }
+        }.execute();
+
+        return this;
     }
 
     /**
@@ -263,6 +345,64 @@ public class ThumbnailLoader {
 
     private String getAvatarUrl(Article article) {
         return article.getThumbnail();
+    }
+
+    private String getAvatarUrl(Channel channel) {
+        return channel.getIcon();
+    }
+
+    /**
+     * Bind view to image at URL
+     *
+     * @param view
+     * @param channel
+     * @return this helper
+     */
+    public ThumbnailLoader bind(final ImageView view, final Channel channel) {
+        if (channel == null)
+            return setImage(loadingAvatar, view);
+
+        String avatarUrl = getAvatarUrl(channel);
+
+        if (TextUtils.isEmpty(avatarUrl))
+            return setImage(loadingAvatar, view);
+
+        final String channelId = channel.getId();
+
+        BitmapDrawable loadedImage = loaded.get(channelId);
+        if (loadedImage != null)
+            return setImage(loadedImage, view);
+
+        setImage(loadingAvatar, view, channelId);
+
+        final String loadUrl = avatarUrl;
+        new FetchAvatarTask(context) {
+
+            @Override
+            public BitmapDrawable call() throws Exception {
+                if (!channelId.equals(view.getTag(R.id.iv_avatar)))
+                    return null;
+
+                final BitmapDrawable image = getImage(channel);
+                if (image != null)
+                    return image;
+                else
+                    return fetchAvatar(loadUrl, channelId.toString());
+            }
+
+            @Override
+            protected void onSuccess(final BitmapDrawable image)
+                    throws Exception {
+                if (image == null)
+                    return;
+                loaded.put(channelId, image);
+                if (channelId.equals(view.getTag(R.id.iv_avatar)))
+                    setImage(image, view);
+            }
+
+        }.execute();
+
+        return this;
     }
 
     /**

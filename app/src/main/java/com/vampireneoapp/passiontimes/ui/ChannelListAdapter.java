@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.core.Article;
+import com.vampireneoapp.passiontimes.core.Channel;
 import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * Adapter to display a list of traffic items
  */
-public class ArticleListAdapter extends SingleTypeAdapter<Article> {
+public class ChannelListAdapter extends SingleTypeAdapter<Channel> {
 
     private final ThumbnailLoader avatars;
 
@@ -22,8 +22,8 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
      * @param inflater
      * @param items
      */
-    public ArticleListAdapter(LayoutInflater inflater, List<Article> items, ThumbnailLoader avatars) {
-        super(inflater, R.layout.article_list_item);
+    public ChannelListAdapter(LayoutInflater inflater, List<Channel> items, ThumbnailLoader avatars) {
+        super(inflater, R.layout.channel_list_item);
 
         this.avatars = avatars;
         setItems(items);
@@ -32,7 +32,7 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
     /**
      * @param inflater
      */
-    public ArticleListAdapter(LayoutInflater inflater, ThumbnailLoader avatars) {
+    public ChannelListAdapter(LayoutInflater inflater, ThumbnailLoader avatars) {
         this(inflater, null, avatars);
 
     }
@@ -50,14 +50,14 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
     }
 
     @Override
-    protected void update(int position, Article article) {
+    protected void update(int position, Channel channel) {
 
-        avatars.bind(imageView(0), article);
+        avatars.bind(imageView(0), channel);
 
         //setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
-        setText(1, article.getTitle());
-        setText(2, article.getAuthor());
-        setText(3, article.getDesc());
+        setText(1, channel.getTitle());
+        //setText(2, channel.getAuthor());
+        setText(3, channel.getDesc());
     }
 
 }

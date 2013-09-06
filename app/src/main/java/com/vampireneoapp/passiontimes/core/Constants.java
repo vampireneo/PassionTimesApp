@@ -43,6 +43,7 @@ public class Constants {
         public static final String PT_URL_AUTHOR = "?type=author";
         public static final String PT_URL_ARTICLE_LIST = "?type=articlelist&category=604";
         public static final String PT_URL_ARTICLE = "?type=article&id=";
+        public static final String PT_URL_CHANNEL_LIST = "?type=channels";
 
 
         /**

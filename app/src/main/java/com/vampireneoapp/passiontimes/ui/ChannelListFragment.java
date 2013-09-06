@@ -14,6 +14,7 @@ import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.authenticator.LogoutService;
 import com.vampireneoapp.passiontimes.core.Article;
+import com.vampireneoapp.passiontimes.core.Channel;
 import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
 import java.util.Collections;
@@ -23,7 +24,7 @@ import javax.inject.Inject;
 
 import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
 
-public class ArticleListFragment extends ItemListFragment<Article> {
+public class ChannelListFragment extends ItemListFragment<Channel> {
 
 
     @Inject PassionTimesServiceProvider serviceProvider;
@@ -61,17 +62,17 @@ public class ArticleListFragment extends ItemListFragment<Article> {
 
 
     @Override
-    public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
-        final List<Article> initialItems = items;
-        return new ThrowableLoader<List<Article>>(getActivity(), items) {
+    public Loader<List<Channel>> onCreateLoader(int id, Bundle args) {
+        final List<Channel> initialItems = items;
+        return new ThrowableLoader<List<Channel>>(getActivity(), items) {
             @Override
-            public List<Article> loadData() throws Exception {
+            public List<Channel> loadData() throws Exception {
 
                 try {
-                    List<Article> latest = null;
+                    List<Channel> latest = null;
 
                     if(getActivity() != null)
-                        latest = serviceProvider.getService(getActivity()).getArticles();
+                        latest = serviceProvider.getService(getActivity()).getChannels();
 
                     if (latest != null)
                         return latest;
@@ -89,13 +90,13 @@ public class ArticleListFragment extends ItemListFragment<Article> {
     }
 
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Article article = ((Article) l.getItemAtPosition(position));
+        Channel channel = ((Channel) l.getItemAtPosition(position));
 
-        startActivity(new Intent(getActivity(), ArticleActivity.class).putExtra(ARTICLE, article));
+        //startActivity(new Intent(getActivity(), ArticleActivity.class).putExtra(ARTICLE, article));
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Article>> loader, List<Article> items) {
+    public void onLoadFinished(Loader<List<Channel>> loader, List<Channel> items) {
         super.onLoadFinished(loader, items);
 
     }
@@ -106,7 +107,7 @@ public class ArticleListFragment extends ItemListFragment<Article> {
     }
 
     @Override
-    protected SingleTypeAdapter<Article> createAdapter(List<Article> items) {
-        return new ArticleListAdapter(getActivity().getLayoutInflater(), items, avatars);
+    protected SingleTypeAdapter<Channel> createAdapter(List<Channel> items) {
+        return new ChannelListAdapter(getActivity().getLayoutInflater(), items, avatars);
     }
 }
