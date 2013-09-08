@@ -52,7 +52,7 @@ public class ChannelListAdapter extends SingleTypeAdapter<Channel> {
     @Override
     protected void update(int position, Channel channel) {
 
-        avatars.bind(imageView(0), channel);
+        //avatars.bind(imageView(0), channel);
 
         //setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
         setText(1, channel.getTitle());

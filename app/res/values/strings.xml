@@ -17,12 +17,14 @@
     <string name="user_column">User</string>
     <string name="article_column">Article</string>
     <string name="date_column">Date</string>
+    <string name="error_loading_channels">Loading channels failed</string>
     <string name="error_loading_articles">Loading articles failed</string>
     <string name="error_loading_users">Loading users failed</string>
     <string name="error_loading_news">Loading news failed</string>
     <string name="error_loading_checkins">Loading check-ins failed</string>
     <string name="no_users">No Users</string>
     <string name="no_article">No Article</string>
+    <string name="no_channel">No Channel</string>
     <string name="no_news">No News</string>
     <string name="avatar">Avatar</string>
     <string name="choose">Choose</string>

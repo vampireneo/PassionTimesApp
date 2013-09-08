@@ -83,7 +83,7 @@ public class CarouselActivity extends BootstrapFragmentActivity implements Actio
             pager.setAdapter(new BootstrapPagerAdapter(getResources(), getSupportFragmentManager()));
 
             indicator.setViewPager(pager);
-            pager.setCurrentItem(1);
+            pager.setCurrentItem(0);
 
         //}
 

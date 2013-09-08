@@ -355,12 +355,13 @@ public class PassionTimesService {
                     String key = (String)keys.next();
                     JSONObject object = jsonObject.getJSONObject(key);
                     Channel channel = new Channel();
-                    channel.setFb(object.getString("fb"));
+                    channel.setId(key);
+                    channel.setTitle(object.getString("title"));
+                    channel.setIcon(object.getString("icon"));
                     channel.setDesc(object.getString("desc"));
                     channel.setHost(object.getString("host"));
-                    channel.setIcon(object.getString("icon"));
-                    channel.setTitle(object.getString("title"));
-                    channel.setId(key);
+                    if (object.has("fb"))
+                        channel.setFb(object.getString("fb"));
                     ArrayList<String> adMp3 = new ArrayList<String>();
                     ArrayList<String> adMp4 = new ArrayList<String>();
                     channel.setAdMp3(adMp3);
@@ -377,10 +378,10 @@ public class PassionTimesService {
                 }
             });
 
-            if (response.results != null) {
+            if (response.results != null)
                 return response.results;
-            }
-            return Collections.emptyList();
+            else
+                return Collections.emptyList();
         } catch (HttpRequestException e) {
             throw e.getCause();
         }

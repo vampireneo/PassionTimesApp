@@ -41,7 +41,7 @@ public class ChannelListFragment extends ItemListFragment<Channel> {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText(R.string.no_article);
+        setEmptyText(R.string.no_channel);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class ChannelListFragment extends ItemListFragment<Channel> {
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return R.string.error_loading_articles;
+        return R.string.error_loading_channels;
     }
 
     @Override
