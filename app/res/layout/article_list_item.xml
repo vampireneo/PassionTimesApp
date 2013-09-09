@@ -28,28 +28,31 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal">
+            android:layout_height="fill_parent">
 
             <TextView
                     android:id="@+id/tv_title"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/table_text_selector" />
+                    android:textColor="@color/table_text_selector"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="80dp" />
 
             <TextView
                 android:id="@+id/tv_author"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/table_text_selector"
-                android:minWidth="100dp" />
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:gravity="bottom|right"
+                android:maxWidth="80dp" />
+        </RelativeLayout>
 
         <TextView
                 android:id="@+id/tv_desc"
