@@ -46,13 +46,13 @@ public class ChannelListAdapter extends SingleTypeAdapter<Channel> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_title, R.id.tv_author, R.id.tv_desc };
+        return new int[] { R.id.iv_icon, R.id.tv_title, R.id.tv_author, R.id.tv_desc };
     }
 
     @Override
     protected void update(int position, Channel channel) {
 
-        //avatars.bind(imageView(0), channel);
+        avatars.bind(imageView(0), channel);
 
         //setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
         setText(1, channel.getTitle());
