@@ -56,7 +56,7 @@ public class ChannelListAdapter extends SingleTypeAdapter<Channel> {
 
         //setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
         setText(1, channel.getTitle());
-        //setText(2, channel.getAuthor());
+        setText(2, channel.getHost());
         setText(3, channel.getDesc());
     }
 
