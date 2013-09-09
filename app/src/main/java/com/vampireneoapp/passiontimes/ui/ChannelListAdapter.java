@@ -39,7 +39,7 @@ public class ChannelListAdapter extends SingleTypeAdapter<Channel> {
 
     @Override
     public long getItemId(final int position) {
-        final String id = getItem(position).getId();
+        final String id = Integer.toString(getItem(position).getId());
         return !TextUtils.isEmpty(id) ? id.hashCode() : super
                 .getItemId(position);
     }

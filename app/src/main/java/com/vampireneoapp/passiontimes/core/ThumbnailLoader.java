@@ -107,7 +107,7 @@ public class ThumbnailLoader {
      * @return image
      */
     protected BitmapDrawable getImage(final Channel channel) {
-        File avatarFile = new File(avatarDir, channel.getId());
+        File avatarFile = new File(avatarDir, Integer.toString(channel.getId()));
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
@@ -233,7 +233,7 @@ public class ThumbnailLoader {
         if (TextUtils.isEmpty(thumbnailUrl))
             return this;
 
-        final String channelId = channel.getId();
+        final String channelId = Integer.toString(channel.getId());
 
         BitmapDrawable loadedImage = loaded.get(channelId);
         if (loadedImage != null) {
@@ -367,7 +367,7 @@ public class ThumbnailLoader {
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
 
-        final String channelId = channel.getId();
+        final String channelId = Integer.toString(channel.getId());
 
         BitmapDrawable loadedImage = loaded.get(channelId);
         if (loadedImage != null)

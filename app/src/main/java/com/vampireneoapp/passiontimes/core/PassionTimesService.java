@@ -355,7 +355,7 @@ public class PassionTimesService {
                     String key = (String)keys.next();
                     JSONObject object = jsonObject.getJSONObject(key);
                     Channel channel = new Channel();
-                    channel.setId(key);
+                    channel.setId(Integer.parseInt(key));
                     channel.setTitle(object.getString("title"));
                     channel.setIcon(object.getString("icon"));
                     channel.setDesc(object.getString("desc"));
@@ -374,7 +374,7 @@ public class PassionTimesService {
 
             Collections.sort(response.results, new Comparator<Channel>() {
                 public int compare(Channel o1, Channel o2) {
-                    return o1.getId().compareTo(o2.getId());
+                    return o1.getId() - o2.getId();
                 }
             });
 

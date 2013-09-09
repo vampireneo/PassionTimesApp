@@ -8,7 +8,7 @@ public class Channel implements Serializable {
 
     private static final long serialVersionUID = -7783546652234765896L;
 
-    protected String id;
+    protected int id;
     protected String title;
     protected String fb;
     protected String desc;
@@ -17,11 +17,11 @@ public class Channel implements Serializable {
     protected ArrayList<String> adMp4;
     protected ArrayList<String> adMp3;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
