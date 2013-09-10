@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Activity to view the carousel and view pager indicator with fragments.
  */
-public class CarouselActivity extends BootstrapFragmentActivity implements ActionBar.OnNavigationListener{
+public class CarouselActivity extends BootstrapFragmentActivity {// implements ActionBar.OnNavigationListener{
 
     @InjectView(R.id.tpi_header) TitlePageIndicator indicator;
     @InjectView(R.id.vp_pages) ViewPager pager;
@@ -58,7 +58,7 @@ public class CarouselActivity extends BootstrapFragmentActivity implements Actio
         menuDrawer.setSlideDrawable(R.drawable.ic_drawer);
         menuDrawer.setDrawerIndicatorEnabled(true);
 
-        String[] articleCategories = getResources().getStringArray(R.array.articleCategories);
+        /*String[] articleCategories = getResources().getStringArray(R.array.articleCategories);
         ArrayList<String> categoryList = new ArrayList<String>(Arrays.asList(articleCategories));
         categoryList.add("test");
         Context context = getSupportActionBar().getThemedContext();
@@ -70,7 +70,7 @@ public class CarouselActivity extends BootstrapFragmentActivity implements Actio
 
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        getSupportActionBar().setListNavigationCallbacks(list, this);
+        getSupportActionBar().setListNavigationCallbacks(list, this);*/
 
         Views.inject(this);
 
@@ -153,11 +153,11 @@ public class CarouselActivity extends BootstrapFragmentActivity implements Actio
         }
     }
 
-    @Override
+    /*@Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         //mSelected.setText("Selected: " + mLocations[itemPosition]);
         return true;
-    }
+    }*/
 /*    private void navigateToTimer() {
         final Intent i = new Intent(this, BootstrapTimerActivity.class);
         startActivity(i);
