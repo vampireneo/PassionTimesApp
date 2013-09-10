@@ -38,6 +38,7 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE_LIST;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CHANNEL_LIST;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_AUTHOR;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_NEWS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_USERS;
@@ -92,6 +93,10 @@ public class PassionTimesService {
 
     private static class ChannelsWrapper {
         private List<Channel> results;
+    }
+
+    private static class AuthorsWrapper {
+        private List<Author> results;
     }
 
     private static class JsonException extends IOException {
@@ -374,6 +379,49 @@ public class PassionTimesService {
 
             Collections.sort(response.results, new Comparator<Channel>() {
                 public int compare(Channel o1, Channel o2) {
+                    return o1.getId() - o2.getId();
+                }
+            });
+
+            if (response.results != null)
+                return response.results;
+            else
+                return Collections.emptyList();
+        } catch (HttpRequestException e) {
+            throw e.getCause();
+        }
+    }
+
+    /**
+     * Get all authors that exist on PassionTimes
+     *
+     * @return non-null but possibly empty list of author
+     * @throws java.io.IOException
+     */
+    public List<Author> getAuthors() throws IOException {
+        try {
+            AuthorsWrapper response = new AuthorsWrapper();
+            response.results = new ArrayList<Author>();
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_AUTHOR);
+            try {
+                JSONObject jsonObject = new JSONObject(request);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    Author author = new Author();
+                    author.setId(Integer.parseInt(key));
+                    author.setName(object.getString("name"));
+                    author.setContent(object.getString("content"));
+                    author.setProfilePic(object.getString("profile_pic"));
+                    response.results.add(author);
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
+
+            Collections.sort(response.results, new Comparator<Author>() {
+                public int compare(Author o1, Author o2) {
                     return o1.getId() - o2.getId();
                 }
             });
