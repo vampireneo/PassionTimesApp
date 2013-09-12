@@ -39,6 +39,7 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE_
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CHANNEL_LIST;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_AUTHOR;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CATEGORY;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_NEWS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_USERS;
@@ -97,6 +98,10 @@ public class PassionTimesService {
 
     private static class AuthorsWrapper {
         private List<Author> results;
+    }
+
+    private static class CategoriesWrapper {
+        private List<Category> results;
     }
 
     private static class JsonException extends IOException {
@@ -382,6 +387,54 @@ public class PassionTimesService {
                     return o1.getId() - o2.getId();
                 }
             });
+
+            if (response.results != null)
+                return response.results;
+            else
+                return Collections.emptyList();
+        } catch (HttpRequestException e) {
+            throw e.getCause();
+        }
+    }
+
+    /**
+     * Get all categories that exist on PassionTimes
+     *
+     * @return non-null but possibly empty list of category
+     * @throws java.io.IOException
+     */
+    public List<Category> getCategories() throws IOException {
+        try {
+            CategoriesWrapper response = new CategoriesWrapper();
+            response.results = new ArrayList<Category>();
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_CATEGORY);
+            try {
+                JSONObject jsonObject = new JSONObject(request);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    Category category = new Category();
+                    category.setCategoryId(key);
+                    category.setName(object.getString("name"));
+                    response.results.add(category);
+                    if (object.has("subCategory")) {
+                        JSONObject jsonSubCategories = jsonObject.getJSONObject("subCategory");
+                        Iterator subCatKeys = jsonSubCategories.keys();
+                        while (subCatKeys.hasNext()) {
+                            String subCatId = (String)subCatKeys.next();
+                            JSONObject subCat = jsonSubCategories.getJSONObject(subCatId);
+                            Category subCategory = new Category();
+                            subCategory.setCategoryId(key);
+                            subCategory.setSubCategoryId(subCatId);
+                            subCategory.setName(subCat.getString("name"));
+                            response.results.add(subCategory);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
 
             if (response.results != null)
                 return response.results;

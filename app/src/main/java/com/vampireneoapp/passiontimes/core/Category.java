@@ -7,9 +7,9 @@ public class Category implements Serializable {
 
     private static final long serialVersionUID = -7775386652234764012L;
 
-    protected int id;
     protected String name;
-    protected String subCategory;
+    protected String categoryId;
+    protected String subCategoryId;
 
     public String getName() {
         return name;
@@ -19,13 +19,19 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
+    public String getSubCategoryId() {
+        return subCategoryId;
+    }
 
+    public void setSubCategoryId(String subCategoryId) {
+        this.subCategoryId = subCategoryId;
+    }
 }
