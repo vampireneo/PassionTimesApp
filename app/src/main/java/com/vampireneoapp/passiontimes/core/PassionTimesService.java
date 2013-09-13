@@ -30,6 +30,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import sun.print.resources.serviceui_it;
+
 import static com.vampireneoapp.passiontimes.core.Constants.Http.HEADER_PARSE_APP_ID;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.HEADER_PARSE_REST_API_KEY;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_APP_ID;
@@ -300,13 +302,16 @@ public class PassionTimesService {
      * @return non-null but possibly empty list of article
      * @throws java.io.IOException
      */
-    public List<Article> getArticles() throws IOException {
+    public List<Article> getArticles(String categoryId, String subCategoryId) throws IOException {
         try {
+            if (categoryId == null) categoryId = "604";
+            subCategoryId = (subCategoryId == null) ? "" : "&subCategory=" + subCategoryId;
+
             //HttpRequest request = execute(HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE_LIST));
             ArticlesWrapper response = new ArticlesWrapper();
             response.results = new ArrayList<Article>();
             //HttpRequest request = HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE_LIST);
-            String request = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE_LIST);
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE_LIST + categoryId + subCategoryId);
             try {
                 JSONObject jsonObject = new JSONObject(request);
                 Iterator keys = jsonObject.keys();
@@ -419,7 +424,7 @@ public class PassionTimesService {
                     category.setName(object.getString("name"));
                     response.results.add(category);
                     if (object.has("subCategory")) {
-                        JSONObject jsonSubCategories = jsonObject.getJSONObject("subCategory");
+                        JSONObject jsonSubCategories = object.getJSONObject("subCategory");
                         Iterator subCatKeys = jsonSubCategories.keys();
                         while (subCatKeys.hasNext()) {
                             String subCatId = (String)subCatKeys.next();
@@ -427,7 +432,7 @@ public class PassionTimesService {
                             Category subCategory = new Category();
                             subCategory.setCategoryId(key);
                             subCategory.setSubCategoryId(subCatId);
-                            subCategory.setName(subCat.getString("name"));
+                            subCategory.setName(" - " + subCat.getString("name"));
                             response.results.add(subCategory);
                         }
                     }

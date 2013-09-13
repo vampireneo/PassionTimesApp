@@ -19,14 +19,18 @@ import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.authenticator.LogoutService;
 import com.vampireneoapp.passiontimes.core.Article;
+import com.vampireneoapp.passiontimes.core.Category;
 import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import sun.util.logging.resources.logging;
 
 import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
 
@@ -36,6 +40,11 @@ public class ArticleListFragment extends ItemListFragment<Article> implements Ac
     @Inject PassionTimesServiceProvider serviceProvider;
     @Inject ThumbnailLoader avatars;
     @Inject LogoutService logoutService;
+
+    private ArrayList<String> categoryList;
+    private HashMap<String, Category> categoryMap;
+    private String categoryId;
+    private String subCategoryId;
 
 
     @Override
@@ -53,9 +62,6 @@ public class ArticleListFragment extends ItemListFragment<Article> implements Ac
     @Override //For Fragments.
     public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu, inflater);
-        String[] articleCategories = getResources().getStringArray(R.array.articleCategories);
-        ArrayList<String> categoryList = new ArrayList<String>(Arrays.asList(articleCategories));
-        categoryList.add("test2");
         Context context = getSherlockActivity().getSupportActionBar().getThemedContext();
         ArrayAdapter<String> list = new ArrayAdapter<String>(context, R.layout.sherlock_spinner_item, categoryList);
         list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
@@ -65,6 +71,21 @@ public class ArticleListFragment extends ItemListFragment<Article> implements Ac
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        try {
+            String name = categoryList.get(itemPosition);
+            if (name.equals("以作者列出文章")) {
+                //do sth
+            }
+            else {
+                Category category = categoryMap.get(name);
+                categoryId = category.getCategoryId();
+                subCategoryId = category.getSubCategoryId();
+                forceRefresh();
+            }
+        }
+        catch (Exception e) {
+
+        }
         //mSelected.setText("Selected: " + mLocations[itemPosition]);
         return true;
     }
@@ -96,8 +117,19 @@ public class ArticleListFragment extends ItemListFragment<Article> implements Ac
                 try {
                     List<Article> latest = null;
 
+                    String[] articleCategories = getResources().getStringArray(R.array.articleCategories);
+                    categoryList = new ArrayList<String>(Arrays.asList(articleCategories));
+                    categoryMap = new HashMap<String, Category>();
+                    List<Category> categories = serviceProvider.getService(getActivity()).getCategories();
+                    for(int i = 0; i < categories.size(); i++) {
+                        String catName = categories.get(i).getName();
+                        categoryList.add(catName);
+                        categoryMap.put(catName, categories.get(i));
+                    }
+                    //categoryList.add("testing 123");
+
                     if(getActivity() != null)
-                        latest = serviceProvider.getService(getActivity()).getArticles();
+                        latest = serviceProvider.getService(getActivity()).getArticles(categoryId, subCategoryId);
 
                     if (latest != null)
                         return latest;
