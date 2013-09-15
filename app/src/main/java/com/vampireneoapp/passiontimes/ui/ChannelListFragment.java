@@ -2,12 +2,10 @@ package com.vampireneoapp.passiontimes.ui;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -18,18 +16,15 @@ import com.vampireneoapp.passiontimes.BootstrapApplication;
 import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.authenticator.LogoutService;
-import com.vampireneoapp.passiontimes.core.Article;
 import com.vampireneoapp.passiontimes.core.Channel;
 import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.vampireneoapp.passiontimes.core.Constants.Extra.ARTICLE;
+import static com.vampireneoapp.passiontimes.core.Constants.Extra.CHANNEL;
 
 public class ChannelListFragment extends ItemListFragment<Channel> {
 
@@ -104,8 +99,7 @@ public class ChannelListFragment extends ItemListFragment<Channel> {
 
     public void onListItemClick(ListView l, View v, int position, long id) {
         Channel channel = ((Channel) l.getItemAtPosition(position));
-
-        //startActivity(new Intent(getActivity(), ArticleActivity.class).putExtra(ARTICLE, article));
+        startActivity(new Intent(getActivity(), ChannelDetailListActivity.class).putExtra(CHANNEL, channel));
     }
 
     @Override

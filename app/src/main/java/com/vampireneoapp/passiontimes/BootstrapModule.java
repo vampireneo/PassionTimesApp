@@ -11,6 +11,7 @@ import com.vampireneoapp.passiontimes.ui.ArticleActivity;
 import com.vampireneoapp.passiontimes.ui.ArticleListFragment;
 import com.vampireneoapp.passiontimes.ui.BootstrapTimerActivity;
 import com.vampireneoapp.passiontimes.ui.CarouselActivity;
+import com.vampireneoapp.passiontimes.ui.ChannelDetailListActivity;
 import com.vampireneoapp.passiontimes.ui.ChannelListFragment;
 import com.vampireneoapp.passiontimes.ui.CheckInsListFragment;
 import com.vampireneoapp.passiontimes.ui.ItemListFragment;
@@ -46,7 +47,8 @@ import dagger.Provides;
                 TimerService.class,
                 ArticleActivity.class,
                 ArticleListFragment.class,
-                ChannelListFragment.class
+                ChannelListFragment.class,
+                ChannelDetailListActivity.class
         }
 
 )

@@ -40,6 +40,7 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE_LIST;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CHANNEL_LIST;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CHANNEL_DETAIL_LIST;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_AUTHOR;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CATEGORY;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
@@ -104,6 +105,10 @@ public class PassionTimesService {
 
     private static class CategoriesWrapper {
         private List<Category> results;
+    }
+
+    private static class ChannelDetailsWrapper {
+        private List<ChannelDetail> results;
     }
 
     private static class JsonException extends IOException {
@@ -390,6 +395,74 @@ public class PassionTimesService {
             Collections.sort(response.results, new Comparator<Channel>() {
                 public int compare(Channel o1, Channel o2) {
                     return o1.getId() - o2.getId();
+                }
+            });
+
+            if (response.results != null)
+                return response.results;
+            else
+                return Collections.emptyList();
+        } catch (HttpRequestException e) {
+            throw e.getCause();
+        }
+    }
+
+    /**
+     * Get all channels that exist on PassionTimes
+     *
+     * @return non-null but possibly empty list of article
+     * @throws java.io.IOException
+     */
+    public List<ChannelDetail> getChannelDetails(String channelId) throws IOException {
+        try {
+            ChannelDetailsWrapper response = new ChannelDetailsWrapper();
+            response.results = new ArrayList<ChannelDetail>();
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_CHANNEL_DETAIL_LIST + channelId);
+            try {
+                JSONObject jsonObject = new JSONObject(request);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    ChannelDetail channelDetail = new ChannelDetail();
+                    channelDetail.setId(key);
+                    channelDetail.setTopic(object.getString("topic"));
+                    channelDetail.setHost(object.getString("host"));
+                    channelDetail.setTs(object.getString("ts"));
+                    channelDetail.setThumbnail(object.getString("thumbnail"));
+                    channelDetail.setAdMp4(object.getString("admp4"));
+                    ArrayList<String> mp3 = new ArrayList<String>();
+                    ArrayList<String> video = new ArrayList<String>();
+                    if (object.has("mp3")) {
+                        JSONObject mp3Object = object.getJSONObject("mp3");
+                        Iterator mp3Keys = mp3Object.keys();
+                        while (mp3Keys.hasNext()) {
+                            String mp3Key = (String)mp3Keys.next();
+                            mp3.add(mp3Object.getString(mp3Key));
+                        }
+                    }
+                    if (object.has("video")) {
+                        JSONObject videoObject = object.getJSONObject("video");
+                        Iterator videoKeys = videoObject.keys();
+                        while (videoKeys.hasNext()) {
+                            String videoKey = (String)videoKeys.next();
+                            video.add(videoObject.getString(videoKey));
+                        }
+                    }
+                    channelDetail.setMp3(mp3);
+                    channelDetail.setVideo(video);
+                    response.results.add(channelDetail);
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
+
+            Collections.sort(response.results, new Comparator<ChannelDetail>() {
+                public int compare(ChannelDetail o1, ChannelDetail o2) {
+                    int result = o2.getTs().compareTo(o1.getTs());
+                    if (result == 0)
+                        result = o2.getId().compareTo(o1.getId());
+                    return result;
                 }
             });
 
