@@ -38,7 +38,6 @@ public class ArticleListFragment extends ItemListFragment<Article> implements Ac
 
 
     @Inject PassionTimesServiceProvider serviceProvider;
-    @Inject ThumbnailLoader avatars;
     @Inject LogoutService logoutService;
 
     private ArrayList<String> categoryList;
@@ -165,6 +164,6 @@ public class ArticleListFragment extends ItemListFragment<Article> implements Ac
 
     @Override
     protected SingleTypeAdapter<Article> createAdapter(List<Article> items) {
-        return new ArticleListAdapter(getActivity().getLayoutInflater(), items, avatars);
+        return new ArticleListAdapter(getActivity().getLayoutInflater(), items);
     }
 }

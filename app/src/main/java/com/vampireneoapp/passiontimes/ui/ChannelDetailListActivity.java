@@ -10,7 +10,6 @@ import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.core.Channel;
 import com.vampireneoapp.passiontimes.core.ChannelDetail;
-import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +25,6 @@ public class ChannelDetailListActivity extends BootstrapActivity  {
     @InjectView(R.id.tv_title) protected TextView title;
 
     @Inject PassionTimesServiceProvider serviceProvider;
-    @Inject protected ThumbnailLoader thumbnailLoader;
 
     protected Channel channel;
 
@@ -44,8 +42,6 @@ public class ChannelDetailListActivity extends BootstrapActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         title.setText(channel.getTitle());
-        //author.setText(article.getAuthor());
-        //date.setText(article.getTs());
 
         new GetChannelDetailTask(this).execute(Integer.toString(channel.getId()));
     }

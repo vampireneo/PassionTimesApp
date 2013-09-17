@@ -4,10 +4,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.squareup.picasso.Picasso;
+import com.vampireneoapp.passiontimes.BootstrapApplication;
 import com.vampireneoapp.passiontimes.R;
-import com.vampireneoapp.passiontimes.core.Article;
 import com.vampireneoapp.passiontimes.core.Channel;
-import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
 import java.util.List;
 
@@ -16,24 +16,21 @@ import java.util.List;
  */
 public class ChannelListAdapter extends SingleTypeAdapter<Channel> {
 
-    private final ThumbnailLoader avatars;
-
     /**
      * @param inflater
      * @param items
      */
-    public ChannelListAdapter(LayoutInflater inflater, List<Channel> items, ThumbnailLoader avatars) {
+    public ChannelListAdapter(LayoutInflater inflater, List<Channel> items) {
         super(inflater, R.layout.channel_list_item);
 
-        this.avatars = avatars;
         setItems(items);
     }
 
     /**
      * @param inflater
      */
-    public ChannelListAdapter(LayoutInflater inflater, ThumbnailLoader avatars) {
-        this(inflater, null, avatars);
+    public ChannelListAdapter(LayoutInflater inflater) {
+        this(inflater, null);
 
     }
 
@@ -52,9 +49,11 @@ public class ChannelListAdapter extends SingleTypeAdapter<Channel> {
     @Override
     protected void update(int position, Channel channel) {
 
-        avatars.bind(imageView(0), channel);
+        Picasso.with(BootstrapApplication.getInstance())
+                .load(channel.getIcon())
+                .placeholder(R.drawable.passiontimes_logo)
+                .into(imageView(0));
 
-        //setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
         setText(1, channel.getTitle());
         setText(2, channel.getHost());
         setText(3, channel.getDesc());

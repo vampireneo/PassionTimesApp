@@ -17,7 +17,6 @@ import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.authenticator.LogoutService;
 import com.vampireneoapp.passiontimes.core.Channel;
-import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +29,6 @@ public class ChannelListFragment extends ItemListFragment<Channel> {
 
 
     @Inject PassionTimesServiceProvider serviceProvider;
-    @Inject ThumbnailLoader avatars;
     @Inject LogoutService logoutService;
 
 
@@ -115,6 +113,6 @@ public class ChannelListFragment extends ItemListFragment<Channel> {
 
     @Override
     protected SingleTypeAdapter<Channel> createAdapter(List<Channel> items) {
-        return new ChannelListAdapter(getActivity().getLayoutInflater(), items, avatars);
+        return new ChannelListAdapter(getActivity().getLayoutInflater(), items);
     }
 }
