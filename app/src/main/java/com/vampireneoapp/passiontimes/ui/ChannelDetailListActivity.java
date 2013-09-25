@@ -1,9 +1,11 @@
 package com.vampireneoapp.passiontimes.ui;
 
 import android.accounts.AccountsException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.widget.TextView;
 
 import com.vampireneoapp.passiontimes.PassionTimesServiceProvider;
@@ -12,6 +14,7 @@ import com.vampireneoapp.passiontimes.core.Channel;
 import com.vampireneoapp.passiontimes.core.ChannelDetail;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,7 +23,7 @@ import butterknife.InjectView;
 
 import static com.vampireneoapp.passiontimes.core.Constants.Extra.CHANNEL;
 
-public class ChannelDetailListActivity extends BootstrapActivity  {
+public class ChannelDetailListActivity extends ItemListActivity<ChannelDetail>  {
 
     @InjectView(R.id.tv_title) protected TextView title;
 
@@ -29,21 +32,53 @@ public class ChannelDetailListActivity extends BootstrapActivity  {
     protected Channel channel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.channel_detail_view);
+        setContentView(R.layout.channel_detail_list_item);
 
         if(getIntent() != null && getIntent().getExtras() != null) {
             channel = (Channel) getIntent().getExtras().getSerializable(CHANNEL);
         }
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         title.setText(channel.getTitle());
 
-        new GetChannelDetailTask(this).execute(Integer.toString(channel.getId()));
+        //new GetChannelDetailTask(this).execute(Integer.toString(channel.getId()));
+    }
+
+    @Override
+    public Loader<List<ChannelDetail>> onCreateLoader(int i, Bundle bundle) {
+        final List<ChannelDetail> initialItems = items;
+        final Activity a = this;
+        return new ThrowableLoader<List<ChannelDetail>>(this, items) {
+            @Override
+            public List<ChannelDetail> loadData() throws Exception {
+
+                try {
+                    List<ChannelDetail> latest = serviceProvider.getService(a).getChannelDetails(Integer.toString(channel.getId()));
+
+                    if (latest != null)
+                        return latest;
+                    else
+                        return Collections.emptyList();
+                } catch (OperationCanceledException e) {
+                    /*Activity activity = a;
+                    if (activity != null)
+                        activity.finish();*/
+                    return initialItems;
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<ChannelDetail>> listLoader, List<ChannelDetail> channelDetails) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<ChannelDetail>> listLoader) {
+
     }
 
     private class GetChannelDetailTask extends AsyncTask<String, Void, List<ChannelDetail>> {
