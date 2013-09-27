@@ -1,9 +1,7 @@
 package com.vampireneoapp.passiontimes.ui;
 
-import android.accounts.AccountsException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.widget.TextView;
@@ -13,7 +11,6 @@ import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.core.Channel;
 import com.vampireneoapp.passiontimes.core.ChannelDetail;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,13 +32,13 @@ public class ChannelDetailListActivity extends ItemListActivity<ChannelDetail>  
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.channel_detail_list_item);
+        setContentView(R.layout.channel_detail_list);
 
         if(getIntent() != null && getIntent().getExtras() != null) {
             channel = (Channel) getIntent().getExtras().getSerializable(CHANNEL);
         }
 
-        title.setText(channel.getTitle());
+        //title.setText(channel.getTitle());
 
         //new GetChannelDetailTask(this).execute(Integer.toString(channel.getId()));
     }
@@ -81,7 +78,15 @@ public class ChannelDetailListActivity extends ItemListActivity<ChannelDetail>  
 
     }
 
-    private class GetChannelDetailTask extends AsyncTask<String, Void, List<ChannelDetail>> {
+/*
+    @Override
+    protected SingleTypeAdapter<ChannelDetail> createAdapter(List<ChannelDetail> items) {
+        return new ChannelDetailListAdapter(this.getLayoutInflater(), items);
+    }
+*/
+
+
+    /*private class GetChannelDetailTask extends AsyncTask<String, Void, List<ChannelDetail>> {
         public Activity activity;
 
         public GetChannelDetailTask(Activity a)
@@ -107,11 +112,10 @@ public class ChannelDetailListActivity extends ItemListActivity<ChannelDetail>  
         protected void onPostExecute(List<ChannelDetail> channelDetails) {
             //content.setText(article.getContentHtml());
 
-            /*WebSettings settings = content.getSettings();
+            *//*WebSettings settings = content.getSettings();
             settings.setDefaultTextEncodingName("utf-8");
             content.loadData(article.getContent(), "text/html; charset=utf-8", "utf-8");
-            content.setBackgroundColor(0x00000000);*/
+            content.setBackgroundColor(0x00000000);*//*
         }
-    }
-
+    }*/
 }
