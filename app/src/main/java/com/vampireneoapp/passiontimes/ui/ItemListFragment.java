@@ -20,13 +20,12 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.vampireneoapp.passiontimes.R;
-import com.vampireneoapp.passiontimes.R.id;
-import com.vampireneoapp.passiontimes.R.layout;
-import com.vampireneoapp.passiontimes.authenticator.LogoutService;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.Toaster;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.vampireneoapp.passiontimes.R;
+import com.vampireneoapp.passiontimes.R.id;
+import com.vampireneoapp.passiontimes.R.layout;
 
 import java.util.Collections;
 import java.util.List;

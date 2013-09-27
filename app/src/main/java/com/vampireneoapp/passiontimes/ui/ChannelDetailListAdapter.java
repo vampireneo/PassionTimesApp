@@ -7,23 +7,21 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.squareup.picasso.Picasso;
 import com.vampireneoapp.passiontimes.BootstrapApplication;
 import com.vampireneoapp.passiontimes.R;
-import com.vampireneoapp.passiontimes.core.Article;
+import com.vampireneoapp.passiontimes.core.ChannelDetail;
 
 import java.util.List;
 
 /**
  * Adapter to display a list of traffic items
  */
-public class ArticleListAdapter extends SingleTypeAdapter<Article> {
-
-    //private final ThumbnailLoader avatars;
+public class ChannelDetailListAdapter extends SingleTypeAdapter<ChannelDetail> {
 
     /**
      * @param inflater
      * @param items
      */
-    public ArticleListAdapter(LayoutInflater inflater, List<Article> items) {
-        super(inflater, R.layout.article_list_item);
+    public ChannelDetailListAdapter(LayoutInflater inflater, List<ChannelDetail> items) {
+        super(inflater, R.layout.channel_list_item);
 
         setItems(items);
     }
@@ -31,8 +29,9 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
     /**
      * @param inflater
      */
-    public ArticleListAdapter(LayoutInflater inflater) {
+    public ChannelDetailListAdapter(LayoutInflater inflater) {
         this(inflater, null);
+
     }
 
     @Override
@@ -44,20 +43,20 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_title, R.id.tv_author, R.id.tv_desc };
+        return new int[] { R.id.iv_icon, R.id.tv_title, R.id.tv_author, R.id.tv_desc };
     }
 
     @Override
-    protected void update(int position, Article article) {
+    protected void update(int position, ChannelDetail channelDetail) {
 
         Picasso.with(BootstrapApplication.getInstance())
-                .load(article.getThumbnail())
+                .load(channelDetail.getThumbnail())
                 .placeholder(R.drawable.passiontimes_logo)
                 .into(imageView(0));
 
-        setText(1, article.getTitle());
-        setText(2, article.getAuthor());
-        setText(3, article.getDesc());
+        setText(1, channelDetail.getTopic());
+        setText(2, channelDetail.getHost());
+        setText(3, channelDetail.getMp3().get(0));
     }
 
 }

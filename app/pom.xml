@@ -58,6 +58,11 @@
             <type>apklib</type>
         </dependency>
         <dependency>
+            <groupId>com.squareup.picasso</groupId>
+            <artifactId>picasso</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
             <groupId>net.simonvt.menudrawer</groupId>
             <artifactId>menudrawer</artifactId>
             <version>${menudrawer.version}</version>

@@ -26,8 +26,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import sun.print.resources.serviceui_it;
 
 import static com.vampireneoapp.passiontimes.core.Constants.Http.HEADER_PARSE_APP_ID;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.HEADER_PARSE_REST_API_KEY;
@@ -36,6 +39,10 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_REST_API_
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE_LIST;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_BASE;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CHANNEL_LIST;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CHANNEL_DETAIL_LIST;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_AUTHOR;
+import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_CATEGORY;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_NEWS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_USERS;
@@ -86,6 +93,22 @@ public class PassionTimesService {
 
     private static class ArticlesWrapper {
         private List<Article> results;
+    }
+
+    private static class ChannelsWrapper {
+        private List<Channel> results;
+    }
+
+    private static class AuthorsWrapper {
+        private List<Author> results;
+    }
+
+    private static class CategoriesWrapper {
+        private List<Category> results;
+    }
+
+    private static class ChannelDetailsWrapper {
+        private List<ChannelDetail> results;
     }
 
     private static class JsonException extends IOException {
@@ -284,13 +307,16 @@ public class PassionTimesService {
      * @return non-null but possibly empty list of article
      * @throws java.io.IOException
      */
-    public List<Article> getArticles() throws IOException {
+    public List<Article> getArticles(String categoryId, String subCategoryId) throws IOException {
         try {
+            if (categoryId == null) categoryId = "604";
+            subCategoryId = (subCategoryId == null) ? "" : "&subCategory=" + subCategoryId;
+
             //HttpRequest request = execute(HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE_LIST));
             ArticlesWrapper response = new ArticlesWrapper();
             response.results = new ArrayList<Article>();
             //HttpRequest request = HttpRequest.get(PT_URL_BASE + PT_URL_ARTICLE_LIST);
-            String request = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE_LIST);
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_ARTICLE_LIST + categoryId + subCategoryId);
             try {
                 JSONObject jsonObject = new JSONObject(request);
                 Iterator keys = jsonObject.keys();
@@ -307,11 +333,18 @@ public class PassionTimesService {
                     article.setTs(object.getString("ts"));
                     article.setCategory(object.getString("category"));
                     article.setSubCategory(object.getString("subCategory"));
-                    response.results.add(0, article);
+                    response.results.add(article);
                 }
             } catch (JSONException e) {
                 Log.d("failed to parse JSON", e.getLocalizedMessage());
             }
+
+            Collections.sort(response.results, new Comparator<Article>() {
+                public int compare(Article o1, Article o2) {
+                    int result = o2.getTs().compareTo(o1.getTs());
+                    return (result == 0 ? o2.getId().compareTo(o1.getId()) : result);
+                }
+            });
 
             //String test = fromJson(request, String.class);
             //ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
@@ -319,6 +352,215 @@ public class PassionTimesService {
                 return response.results;
             }
             return Collections.emptyList();
+        } catch (HttpRequestException e) {
+            throw e.getCause();
+        }
+    }
+
+    /**
+     * Get all channels that exist on PassionTimes
+     *
+     * @return non-null but possibly empty list of article
+     * @throws java.io.IOException
+     */
+    public List<Channel> getChannels() throws IOException {
+        try {
+            ChannelsWrapper response = new ChannelsWrapper();
+            response.results = new ArrayList<Channel>();
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_CHANNEL_LIST);
+            try {
+                JSONObject jsonObject = new JSONObject(request);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    Channel channel = new Channel();
+                    channel.setId(Integer.parseInt(key));
+                    channel.setTitle(object.getString("title"));
+                    channel.setIcon(object.getString("icon"));
+                    channel.setDesc(object.getString("desc"));
+                    channel.setHost(object.getString("host"));
+                    if (object.has("fb"))
+                        channel.setFb(object.getString("fb"));
+                    ArrayList<String> adMp3 = new ArrayList<String>();
+                    ArrayList<String> adMp4 = new ArrayList<String>();
+                    channel.setAdMp3(adMp3);
+                    channel.setAdMp4(adMp4);
+                    response.results.add(channel);
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
+
+            Collections.sort(response.results, new Comparator<Channel>() {
+                public int compare(Channel o1, Channel o2) {
+                    return o1.getId() - o2.getId();
+                }
+            });
+
+            if (response.results != null)
+                return response.results;
+            else
+                return Collections.emptyList();
+        } catch (HttpRequestException e) {
+            throw e.getCause();
+        }
+    }
+
+    /**
+     * Get all channels that exist on PassionTimes
+     *
+     * @return non-null but possibly empty list of article
+     * @throws java.io.IOException
+     */
+    public List<ChannelDetail> getChannelDetails(String channelId) throws IOException {
+        try {
+            ChannelDetailsWrapper response = new ChannelDetailsWrapper();
+            response.results = new ArrayList<ChannelDetail>();
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_CHANNEL_DETAIL_LIST + channelId);
+            try {
+                JSONObject jsonObject = new JSONObject(request);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    ChannelDetail channelDetail = new ChannelDetail();
+                    channelDetail.setId(key);
+                    channelDetail.setTopic(object.getString("topic"));
+                    channelDetail.setHost(object.getString("host"));
+                    channelDetail.setTs(object.getString("ts"));
+                    channelDetail.setThumbnail(object.getString("thumbnail"));
+                    channelDetail.setAdMp4(object.getString("admp4"));
+                    ArrayList<String> mp3 = new ArrayList<String>();
+                    ArrayList<String> video = new ArrayList<String>();
+                    if (object.has("mp3")) {
+                        JSONObject mp3Object = object.getJSONObject("mp3");
+                        Iterator mp3Keys = mp3Object.keys();
+                        while (mp3Keys.hasNext()) {
+                            String mp3Key = (String)mp3Keys.next();
+                            mp3.add(mp3Object.getString(mp3Key));
+                        }
+                    }
+                    if (object.has("video")) {
+                        JSONObject videoObject = object.getJSONObject("video");
+                        Iterator videoKeys = videoObject.keys();
+                        while (videoKeys.hasNext()) {
+                            String videoKey = (String)videoKeys.next();
+                            video.add(videoObject.getString(videoKey));
+                        }
+                    }
+                    channelDetail.setMp3(mp3);
+                    channelDetail.setVideo(video);
+                    response.results.add(channelDetail);
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
+
+            Collections.sort(response.results, new Comparator<ChannelDetail>() {
+                public int compare(ChannelDetail o1, ChannelDetail o2) {
+                    int result = o2.getTs().compareTo(o1.getTs());
+                    if (result == 0)
+                        result = o2.getId().compareTo(o1.getId());
+                    return result;
+                }
+            });
+
+            if (response.results != null)
+                return response.results;
+            else
+                return Collections.emptyList();
+        } catch (HttpRequestException e) {
+            throw e.getCause();
+        }
+    }
+
+    /**
+     * Get all categories that exist on PassionTimes
+     *
+     * @return non-null but possibly empty list of category
+     * @throws java.io.IOException
+     */
+    public List<Category> getCategories() throws IOException {
+        try {
+            CategoriesWrapper response = new CategoriesWrapper();
+            response.results = new ArrayList<Category>();
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_CATEGORY);
+            try {
+                JSONObject jsonObject = new JSONObject(request);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    Category category = new Category();
+                    category.setCategoryId(key);
+                    category.setName(object.getString("name"));
+                    response.results.add(category);
+                    if (object.has("subCategory")) {
+                        JSONObject jsonSubCategories = object.getJSONObject("subCategory");
+                        Iterator subCatKeys = jsonSubCategories.keys();
+                        while (subCatKeys.hasNext()) {
+                            String subCatId = (String)subCatKeys.next();
+                            JSONObject subCat = jsonSubCategories.getJSONObject(subCatId);
+                            Category subCategory = new Category();
+                            subCategory.setCategoryId(key);
+                            subCategory.setSubCategoryId(subCatId);
+                            subCategory.setName(" - " + subCat.getString("name"));
+                            response.results.add(subCategory);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
+
+            if (response.results != null)
+                return response.results;
+            else
+                return Collections.emptyList();
+        } catch (HttpRequestException e) {
+            throw e.getCause();
+        }
+    }
+
+    /**
+     * Get all authors that exist on PassionTimes
+     *
+     * @return non-null but possibly empty list of author
+     * @throws java.io.IOException
+     */
+    public List<Author> getAuthors() throws IOException {
+        try {
+            AuthorsWrapper response = new AuthorsWrapper();
+            response.results = new ArrayList<Author>();
+            String request = readJSONFeed(PT_URL_BASE + PT_URL_AUTHOR);
+            try {
+                JSONObject jsonObject = new JSONObject(request);
+                Iterator keys = jsonObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    JSONObject object = jsonObject.getJSONObject(key);
+                    Author author = new Author();
+                    author.setId(Integer.parseInt(key));
+                    author.setName(object.getString("name"));
+                    author.setContent(object.getString("content"));
+                    author.setProfilePic(object.getString("profile_pic"));
+                    response.results.add(author);
+                }
+            } catch (JSONException e) {
+                Log.d("failed to parse JSON", e.getLocalizedMessage());
+            }
+
+            Collections.sort(response.results, new Comparator<Author>() {
+                public int compare(Author o1, Author o2) {
+                    return o1.getId() - o2.getId();
+                }
+            });
+
+            if (response.results != null)
+                return response.results;
+            else
+                return Collections.emptyList();
         } catch (HttpRequestException e) {
             throw e.getCause();
         }

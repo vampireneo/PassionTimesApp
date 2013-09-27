@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="articleCategories">
+        <item>以作者列出文章</item>
+    </string-array>
+</resources>
