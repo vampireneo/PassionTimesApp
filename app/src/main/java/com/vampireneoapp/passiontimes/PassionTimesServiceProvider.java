@@ -30,6 +30,6 @@ public class PassionTimesServiceProvider {
      * @throws android.accounts.AccountsException
      */
     public PassionTimesService getService(Activity activity) throws IOException, AccountsException {
-        return new PassionTimesService(keyProvider.getAuthKey(activity), userAgentProvider);
+        return new PassionTimesService();
     }
 }

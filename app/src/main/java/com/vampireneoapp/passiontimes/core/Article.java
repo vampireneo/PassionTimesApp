@@ -1,6 +1,11 @@
 package com.vampireneoapp.passiontimes.core;
 
+import android.text.Html;
+import android.text.Spanned;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Article implements Serializable {
 
@@ -16,6 +21,10 @@ public class Article implements Serializable {
     protected String category;
     protected String subCategory;
     protected String id;
+    protected String content;
+    protected ArrayList<String> images;
+    protected ArrayList<String> images_thumbnail;
+    protected Spanned contentHtml;
 
     public String getId() {
         return id;
@@ -77,7 +86,47 @@ public class Article implements Serializable {
         return category;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getSubCategory() {
         return subCategory;
+    }
+
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
+    }
+
+    public ArrayList<String> getImagesThumbnail() {
+        return images_thumbnail;
+    }
+
+    public void setImagesThumbnail(ArrayList<String> images_thumbnail) {
+        this.images_thumbnail = images_thumbnail;
+    }
+
+    public Spanned getContentHtml() {
+        return contentHtml;
+    }
+
+    public void setContentHtml(Spanned contentHtml) {
+        this.contentHtml = contentHtml;
     }
 }

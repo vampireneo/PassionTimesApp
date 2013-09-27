@@ -4,11 +4,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.squareup.picasso.Picasso;
+import com.vampireneoapp.passiontimes.BootstrapApplication;
 import com.vampireneoapp.passiontimes.R;
 import com.vampireneoapp.passiontimes.core.Article;
-import com.vampireneoapp.passiontimes.core.ThumbnailLoader;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -16,26 +16,23 @@ import java.util.List;
  */
 public class ArticleListAdapter extends SingleTypeAdapter<Article> {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM dd");
-    private final ThumbnailLoader avatars;
+    //private final ThumbnailLoader avatars;
 
     /**
      * @param inflater
      * @param items
      */
-    public ArticleListAdapter(LayoutInflater inflater, List<Article> items, ThumbnailLoader avatars) {
+    public ArticleListAdapter(LayoutInflater inflater, List<Article> items) {
         super(inflater, R.layout.article_list_item);
 
-        this.avatars = avatars;
         setItems(items);
     }
 
     /**
      * @param inflater
      */
-    public ArticleListAdapter(LayoutInflater inflater, ThumbnailLoader avatars) {
-        this(inflater, null, avatars);
-
+    public ArticleListAdapter(LayoutInflater inflater) {
+        this(inflater, null);
     }
 
     @Override
@@ -47,16 +44,20 @@ public class ArticleListAdapter extends SingleTypeAdapter<Article> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_name };
+        return new int[] { R.id.iv_avatar, R.id.tv_title, R.id.tv_author, R.id.tv_desc };
     }
 
     @Override
     protected void update(int position, Article article) {
 
-        avatars.bind(imageView(0), article);
+        Picasso.with(BootstrapApplication.getInstance())
+                .load(article.getThumbnail())
+                .placeholder(R.drawable.passiontimes_logo)
+                .into(imageView(0));
 
-        setText(1, String.format("%1$s %2$s", article.getTitle(), article.getAuthor()));
-
+        setText(1, article.getTitle());
+        setText(2, article.getAuthor());
+        setText(3, article.getDesc());
     }
 
 }

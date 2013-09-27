@@ -56,10 +56,10 @@ public class UserListFragment  extends ItemListFragment<User> {
                         .inflate(R.layout.user_list_item_labels, null));
     }
 
-    @Override
+    /*@Override
     LogoutService getLogoutService() {
         return logoutService;
-    }
+    }*/
 
 
     @Override

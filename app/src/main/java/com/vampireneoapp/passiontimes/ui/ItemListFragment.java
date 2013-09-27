@@ -20,13 +20,12 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.vampireneoapp.passiontimes.R;
-import com.vampireneoapp.passiontimes.R.id;
-import com.vampireneoapp.passiontimes.R.layout;
-import com.vampireneoapp.passiontimes.authenticator.LogoutService;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.Toaster;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.vampireneoapp.passiontimes.R;
+import com.vampireneoapp.passiontimes.R.id;
+import com.vampireneoapp.passiontimes.R.layout;
 
 import java.util.Collections;
 import java.util.List;
@@ -158,15 +157,15 @@ public abstract class ItemListFragment<E> extends SherlockFragment
         case id.refresh:
             forceRefresh();
             return true;
-        case R.id.logout:
+        /*case R.id.logout:
             logout();
-            return true;
+            return true;*/
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 
-    abstract LogoutService getLogoutService();
+    /*abstract LogoutService getLogoutService();
 
     private void logout() {
         getLogoutService().logout(new Runnable() {
@@ -177,7 +176,7 @@ public abstract class ItemListFragment<E> extends SherlockFragment
                 forceRefresh();
             }
         });
-    }
+    }*/
 
     /**
      * Force a refresh of the items displayed ignoring any cached items

@@ -3,10 +3,10 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal"
-              android:paddingBottom="5dp"
-              android:paddingLeft="10dp"
+              android:paddingBottom="0dp"
+              android:paddingLeft="0dp"
               android:paddingRight="10dp"
-              android:paddingTop="5dp"
+              android:paddingTop="0dp"
               style="@style/ListItem">
 
     <ImageView
@@ -16,13 +16,49 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="10dp"
             android:contentDescription="@string/avatar"
-            />
+            android:minHeight="@android:dimen/thumbnail_height"
+            android:minWidth="@android:dimen/thumbnail_width"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="0dp"/>
 
-    <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/table_text_selector"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="80dp" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/table_text_selector" />
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/table_text_light_selector"
+            android:layout_alignParentRight="true"
+            android:gravity="bottom|right"
+            android:layout_alignBaseline="@+id/tv_title"
+            android:maxWidth="80dp" />
+
+        <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:ellipsize="end"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/table_text_light_selector"
+            android:maxLines="2"
+            android:layout_below="@+id/tv_title"
+            android:layout_alignParentLeft="true" />
+    </RelativeLayout>
 
 </LinearLayout>

@@ -38,12 +38,13 @@ public class Constants {
     public static class Http {
         private Http() {}
 
-
-
         public static final String PT_URL_BASE = "http://www.passiontimes.hk/connector/";
         public static final String PT_URL_CATEGORY = "?type=categories";
         public static final String PT_URL_AUTHOR = "?type=author";
-        public static final String PT_URL_ARTICLE = "?type=articlelist&category=604";
+        public static final String PT_URL_ARTICLE_LIST = "?type=articlelist&category=";
+        public static final String PT_URL_ARTICLE = "?type=article&id=";
+        public static final String PT_URL_CHANNEL_LIST = "?type=channels";
+        public static final String PT_URL_CHANNEL_DETAIL_LIST = "?type=channel&code=";
 
 
         /**
@@ -93,6 +94,7 @@ public class Constants {
 
         public static final String ARTICLE = "article";
 
+        public static final String CHANNEL = "channel";
     }
 
     public static class Intent {

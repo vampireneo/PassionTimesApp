@@ -8,7 +8,6 @@ import static com.vampireneoapp.passiontimes.core.Constants.Http.PARSE_REST_API_
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_CHECKINS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_NEWS;
 import static com.vampireneoapp.passiontimes.core.Constants.Http.URL_USERS;
-import static com.vampireneoapp.passiontimes.core.Constants.Http.PT_URL_ARTICLE;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
@@ -63,10 +62,6 @@ public class BootstrapService {
 
         private List<CheckIn> results;
 
-    }
-
-    private static class ArticlesWrapper {
-        private List<Article> results;
     }
 
     private static class JsonException extends IOException {
@@ -190,24 +185,6 @@ public class BootstrapService {
         try {
             HttpRequest request = execute(HttpRequest.get(URL_USERS));
             UsersWrapper response = fromJson(request, UsersWrapper.class);
-            if (response != null && response.results != null)
-                return response.results;
-            return Collections.emptyList();
-        } catch (HttpRequestException e) {
-            throw e.getCause();
-        }
-    }
-
-    /**
-     * Get all articles that exist on PassionTimes
-     *
-     * @return non-null but possibly empty list of article
-     * @throws IOException
-     */
-    public List<Article> getArticles() throws IOException {
-        try {
-            HttpRequest request = execute(HttpRequest.get(PT_URL_ARTICLE));
-            ArticlesWrapper response = fromJson(request, ArticlesWrapper.class);
             if (response != null && response.results != null)
                 return response.results;
             return Collections.emptyList();

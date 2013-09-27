@@ -51,10 +51,10 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn> {
                         .inflate(R.layout.checkins_list_item_labels, null));
     }
 
-    @Override
+    /*@Override
     LogoutService getLogoutService() {
         return logoutService;
-    }
+    }*/
 
     @Override
     public void onDestroyView() {

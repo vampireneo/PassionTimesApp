@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:paddingBottom="0dp"
+              android:paddingLeft="0dp"
+              android:paddingRight="10dp"
+              android:paddingTop="0dp"
+              style="@style/ListItem">
+
+    <ImageView
+            android:id="@+id/iv_icon"
+            style="@style/AvatarLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/avatar"
+            android:minHeight="@android:dimen/thumbnail_height"
+            android:minWidth="@android:dimen/thumbnail_width"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="0dp"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top">
+
+        <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/table_text_selector"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="150dp" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/table_text_light_selector"
+            android:layout_alignParentLeft="false"
+            android:layout_alignBaseline="@+id/tv_title"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:maxWidth="150dp" />
+
+        <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:ellipsize="end"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/table_text_light_selector"
+            android:maxLines="2"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_title" />
+    </RelativeLayout>
+
+</LinearLayout>
